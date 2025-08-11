@@ -8,6 +8,7 @@ import {
 	WorkerLogLevel,
 	WorkerLogTag
 } from 'mediasoup/node/lib/Worker';
+import { PlainTransport } from 'mediasoup/node/lib/PlainTransport';
 import { WebRtcTransport } from 'mediasoup/node/lib/WebRtcTransport';
 import { PipeTransport } from 'mediasoup/node/lib/PipeTransport';
 import { Producer } from 'mediasoup/node/lib/Producer';
@@ -43,6 +44,7 @@ export interface RouterData {
 	workerPid: number;
 	pipeTransports: Map<string, PipeTransport>;
 	webRtcTransports: Map<string, WebRtcTransport>;
+    plainTransports: Map<string, PlainTransport>;
 	producers: Map<string, Producer>;
 	pipeProducers: Map<string, Producer>;
 	consumers: Map<string, Consumer>;
@@ -327,11 +329,6 @@ export default class MediaService {
 							channels: 2
 						}, {
 							kind: 'video',
-							mimeType: 'video/VP8',
-							clockRate: 90000,
-							parameters: { 'x-google-start-bitrate': 500 }
-						}, {
-							kind: 'video',
 							mimeType: 'video/h264',
 							clockRate: 90000,
 							parameters: {
@@ -340,6 +337,11 @@ export default class MediaService {
 								'level-asymmetry-allowed': 1,
 								'x-google-start-bitrate': 500
 							}
+						}, {
+							kind: 'video',
+							mimeType: 'video/VP8',
+							clockRate: 90000,
+							parameters: { 'x-google-start-bitrate': 500 }
 						}, {
 							kind: 'video',
 							mimeType: 'video/VP9',
@@ -355,6 +357,7 @@ export default class MediaService {
 							workerPid: worker.pid,
 							pipeTransports: new Map<string, PipeTransport>(),
 							webRtcTransports: new Map<string, WebRtcTransport>(),
+							plainTransports: new Map<string, PlainTransport>(),
 							producers: new Map<string, Producer>(),
 							pipeProducers: new Map<string, Producer>(),
 							consumers: new Map<string, Consumer>(),
